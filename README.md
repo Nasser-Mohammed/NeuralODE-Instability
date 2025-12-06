@@ -22,7 +22,7 @@ The topological classification of the fixed point is altered by the model.
 - **Ground Truth:** Non-Hyperbolic ($\lambda = 0.0$)
 - **Neural ODE:** Hyperbolic Sink ($\lambda \approx -0.05$)
 
-![Phase Portrait](/Media/System%20comparison.png)
+![Phase Portrait](Media/System%20comparison.png)
 *Figure 2: Vector field comparison showing the "smoothing" of the limit cycle geometry.*
 
 ## Methodology: Inverse-Velocity Weighted Loss
