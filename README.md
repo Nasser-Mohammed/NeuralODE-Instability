@@ -14,7 +14,7 @@ We demonstrate that standard Neural ODEs trained with MSE loss exhibit **spectra
 Standard training fails to capture the critical slowing down near the saddle-node ghost at $(0, 0.2)$. The neural network approximates the cubic "flat" region with a linear slope, causing trajectories to move too fast through the bottleneck.
 
 
-[Ghost Race Animation](Media/neural_ode_race_first.gif)
+![Ghost Race Animation](Media/neural_ode_race_first.gif)
 *Figure 1: Comparison of Ground Truth (Blue) vs. Standard Neural ODE (Red). Note how the Neural ODE fails to "hang" at the ghost point.*
 
 ### 2. Artificial Hyperbolization
@@ -30,7 +30,4 @@ To address the magnitude bias where vanishing gradients ($\dot{x} \approx 0$) ca
 
 ```math
 L = \frac{1}{N} \sum_{t} \frac{1}{\| \dot{x}_{true}(t) \|^2 + \epsilon} \| x_{pred}(t) - x_{true}(t) \|^2
-
-
-Uploading neural_ode_race_first.mp4…
 
