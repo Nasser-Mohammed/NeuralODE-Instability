@@ -13,7 +13,7 @@ We demonstrate that standard Neural ODEs trained with MSE loss exhibit **spectra
 ### 1. The "Ghost" Failure Mode
 Standard training fails to capture the critical slowing down near the saddle-node ghost at $(0, 0.2)$. The neural network approximates the cubic "flat" region with a linear slope, causing trajectories to move too fast through the bottleneck.
 
-<video src="Media/neural_ode_race_first.mp4" controls="controls" style="max-width: 730px;">
+<video src="/Media/neural_ode_race_first.mp4" controls="controls">
 </video>
 *Figure 1: Comparison of Ground Truth (Blue) vs. Standard Neural ODE (Red). Note how the Neural ODE fails to "hang" at the ghost point.*
 
