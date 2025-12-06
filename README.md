@@ -1,4 +1,4 @@
-# Artificial Hyperbolization: Structural Instability of Neural ODEs
+# Artificial Hyperbolization: Structural Instability of Neural ODEs near Non-Hyperbolic Equilibria
 
 **Status:** Manuscript in Preparation (Dec 2025)  
 **Author:** Nasser Mohammed
@@ -29,3 +29,7 @@ To address the magnitude bias where vanishing gradients ($\dot{x} \approx 0$) ca
 
 ```math
 L = \frac{1}{N} \sum_{t} \frac{1}{\| \dot{x}_{true}(t) \|^2 + \epsilon} \| x_{pred}(t) - x_{true}(t) \|^2
+
+
+Uploading neural_ode_race_first.mp4…
+
