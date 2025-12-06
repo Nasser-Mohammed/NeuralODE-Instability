@@ -13,7 +13,7 @@ We demonstrate that standard Neural ODEs trained with MSE loss exhibit **spectra
 ### 1. The "Ghost" Failure Mode
 Standard training fails to capture the critical slowing down near the saddle-node ghost at $(0, 0.2)$. The neural network approximates the cubic "flat" region with a linear slope, causing trajectories to move too fast through the bottleneck.
 
-![Ghost Race Animation](neural_ode_race.gif)
+![Ghost Race Animation](Media/neural_ode_race_first)
 *Figure 1: Comparison of Ground Truth (Blue) vs. Standard Neural ODE (Red). Note how the Neural ODE fails to "hang" at the ghost point.*
 
 ### 2. Artificial Hyperbolization
@@ -21,7 +21,7 @@ The topological classification of the fixed point is altered by the model.
 - **Ground Truth:** Non-Hyperbolic ($\lambda = 0.0$)
 - **Neural ODE:** Hyperbolic Sink ($\lambda \approx -0.05$)
 
-![Phase Portrait](phase_portrait.png)
+![Phase Portrait](Media/System%comparison.png)
 *Figure 2: Vector field comparison showing the "smoothing" of the limit cycle geometry.*
 
 ## Methodology: Inverse-Velocity Weighted Loss
