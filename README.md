@@ -1,39 +1,83 @@
-# Artificial Hyperbolization: Structural Instability of Neural ODEs
+# On the Unlearnability of Saddle-Node Ghosts: Structural Instability in Neural ODEs
 
 **Status:** Manuscript in Preparation (Dec 2025)  
 **Author:** Nasser Mohammed  
-**Links:** [Project CV Entry](#) | [Preprint (Coming Soon)](#)
+**Topic:** Scientific Machine Learning (SciML), Dynamical Systems, Bifurcation Theory
 
 ## Abstract
-Neural Ordinary Differential Equations (Neural ODEs) are powerful tools for system identification, but their structural stability near degenerate fixed points remains an open question. In this study, we investigate a reaction-diffusion system exhibiting a **Saddle-Node bifurcation** (non-hyperbolic fixed point). 
+Neural Ordinary Differential Equations (Neural ODEs) have emerged as a powerful tool for system identification, but their topological fidelity near critical transitions remains unproven. In this study, we investigate the learnability of **Saddle-Node Bifurcations** (specifically the "ghost" region) in a reaction-diffusion system.
 
-We demonstrate that standard Neural ODEs trained with MSE loss exhibit **spectral bias**, effectively "hyperbolizing" the ghost point. This creates artificial exponential stability where polynomial decay should exist, distorting the geometry and period of the associated limit cycle. We propose and implement an **Inverse-Velocity Weighted Loss** to correct this gradient starvation.
+We demonstrate that standard neural architectures suffer from **"Artificial Hyperbolization,"** consistently regularizing degenerate non-hyperbolic equilibria ($\lambda=0$) into stiff hyperbolic sinks ($\lambda \ll 0$). Through a comprehensive ablation study involving Inverse-Velocity Weighting, Sobolev (Vector Field) Training, and L-BFGS optimization, we show that this failure is robust to training strategy. We conclude that the inductive bias of piecewise-linear networks creates a representational barrier, preventing the capture of quadratic tangencies ($f(x) \sim x^2$) without destroying global limit cycles.
 
-## Research Questions
-This project investigates three core hypotheses regarding the learnability of degenerate topologies:
+---
 
-1.  **The "Artificial Hyperbolization" Mechanism:** Does the spectral bias of standard neural networks compel the model to approximate locally flat (cubic) dynamics with linear (exponential) dynamics, thereby shifting the eigenvalues from zero to non-zero real parts?
-2.  **The "Gradient Starvation" Cause:** Is the failure to learn non-hyperbolic dynamics driven by "Magnitude Bias," where the vanishing vector field ($\|\dot{x}\| \to 0$) causes the loss contribution to become negligible?
-3.  **The "Weighted" Solution:** Can structural stability be recovered by re-weighting the optimization landscape inversely to the phase-space velocity?
+## 1. The Problem: Spectral Bias vs. Critical Slowing Down
+Biological systems often operate near tipping points characterized by **Saddle-Node on Invariant Circle (SNIC)** bifurcations. These regions exhibit "ghost" dynamics where the trajectory slows down algebraically ($O(t^{-1})$).
 
-## Preliminary Results
+We hypothesize that standard Neural ODEs, driven by **Spectral Bias** and **Lipschitz constraints**, cannot represent the "flat" cubic contact of a ghost point, effectively smoothing out the bottleneck.
 
-### 1. The "Ghost" Failure Mode
-Standard training fails to capture the critical slowing down near the saddle-node ghost at $(0, 0.2)$. The neural network approximates the cubic "flat" region with a linear slope, causing trajectories to move too fast through the bottleneck.
+### The System
+We analyze a custom Predator-Prey model derived to exhibit a local saddle-node ghost at $z^* = (0, 0.2)$.
+- **Ground Truth Eigenvalues:** $\lambda_1 = 0.00$ (Center), $\lambda_2 = -3.11$ (Stable).
+- **Topology:** Non-Hyperbolic.
 
-![Ghost Race Animation](Media/neural_ode_race_first.gif)
-*Figure 1: Comparison of Ground Truth (Blue) vs. Standard Neural ODE (Red). Note how the Neural ODE fails to "hang" at the ghost point (Middle Plot).*
+---
 
-### 2. Artificial Hyperbolization
-The topological classification of the fixed point is altered by the model.
-- **Ground Truth:** Non-Hyperbolic ($\lambda = 0.0$)
-- **Neural ODE:** Hyperbolic Sink ($\lambda \approx -0.05$)
+## 2. Key Results: The Hierarchy of Failure
 
-![Phase Portrait](Media/System%20comparison.png)
-*Figure 2: Vector field comparison showing the "smoothing" of the limit cycle geometry.*
+We subjected the Neural ODE to a "Steel-Man" suite of training regimes. All failed to capture the topology, revealing fundamental architectural limitations.
 
-## Methodology: Inverse-Velocity Weighted Loss
-To address the magnitude bias where vanishing gradients ($\dot{x} \approx 0$) cause the optimizer to ignore slow dynamics, we introduce a state-dependent importance weighting:
+### A. Artificial Hyperbolization (Standard MSE)
+Standard training ignores the vanishing gradients at the ghost point ("Gradient Starvation").
+- **Result:** The model learns a "Black Hole" sink with $\lambda \approx -14.5$.
+- **Visual:** The model trajectory (Red) flies past the ghost point where the Truth (Blue) hangs.
 
-```math
-\mathcal{L} = \frac{1}{N} \sum_{t} \frac{1}{\| \dot{x}_{true}(t) \|^2 + \epsilon} \| x_{pred}(t) - x_{true}(t) \|^2
+![Ghost Race](Media/neural_ode_race_first.gif)
+*Figure 1: Trajectory comparison. Note the failure of the Neural ODE (Red) to capture the critical slowing down timescale.*
+
+### B. Bifurcation Collapse (Sobolev & L-BFGS)
+Even when trained with **Second-Order Optimization (L-BFGS)** or **Explicit Vector Field Matching (Sobolev Loss)**, the model fails to maintain the saddle-node degeneracy.
+- **Result:** The ghost is converted into a weak sink ($\lambda \approx -3.01$).
+- **Consequence:** This spurious attractor "sucks in" the global limit cycle, destroying the oscillation entirely.
+
+![Bifurcation Collapse](Media/phase_portrait_comparison.png)
+*Figure 2: Topological catastrophe. The Neural ODE (Right) regularizes the ghost into a sink, collapsing the limit cycle that exists in the Ground Truth (Left).*
+
+---
+
+## 3. Mechanism of Failure
+
+### The Magnitude Gap
+The failure is driven by the inability of the network to fit the "flat" quadratic bottom of the vector field magnitude. The network approximates the parabolic $|f(x)| \sim x^2$ with a V-shaped linear approximation $|f(x)| \sim |x|$, resulting in a non-zero derivative at the minimum.
+
+![Magnitude Proof](Media/magnitude_proof.png)
+*Figure 3: Vector field magnitude along the center manifold. The Neural ODE (Red) cannot capture the zero-tangency of the Truth (Blue), enforcing a minimum velocity > 0.*
+
+### Summary of Experiments
+
+| Training Method | Learned Eigenvalues ($\lambda_1, \lambda_2$) | Topological Outcome |
+| :--- | :--- | :--- |
+| **Ground Truth** | **$0.00, -3.11$** | **Saddle-Node Ghost** |
+| Standard MSE (Adam) | $-14.51, -5.16$ | Stiff Sink (Drift) |
+| Inverse-Weighted | $-2.21, +0.01$ | Unstable Saddle |
+| L-BFGS (2nd Order) | $-4.57, -1.03$ | Spurious Attractor |
+| Sobolev (Vector) | $-3.01, -0.09$ | **Bifurcation Collapse** |
+
+---
+
+## 4. Conclusion
+Our results suggest that **standard MLP architectures are mathematically incapable** of representing SNIC bifurcations without introducing structural instability. The piecewise-linear inductive bias forces the model to trade off between capturing the slow manifold (ghost) and the fast manifold (limit cycle); it cannot satisfy both simultaneously.
+
+Future work must move beyond loss function engineering and explore **Rational Networks** or **Bifurcation-Informed Priors** to enforce polynomial degeneracy constraints.
+
+---
+
+## Project Structure
+* `system_definitions.py`: PyTorch implementation of the Predator-Prey system.
+* `train_ablation.py`: Script to run the full suite (MSE, Weighted, Sobolev, L-BFGS).
+* `visualize.py`: Generates the phase portraits and animations.
+
+## Usage
+To reproduce the failure analysis:
+```bash
+python train_ablation.py --mode lbfgs --visualize
