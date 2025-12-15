@@ -26,10 +26,11 @@ We analyze a custom derived Predator-Prey model which has the following features
   The model is given by this coupled reaction-diffusion system:
 
  $$
-\frac{du}{dt} = \frac{10u(1-u)}{1+e^{-12(v-0.4)}} - \frac{4u}{1+e^{-12(0.55-v)}} \\
+\frac{du}{dt} = \frac{10u(1-u)}{1+e^{-12(v-0.4)}} - \frac{4u}{1+e^{-12(0.55-v)}}
+$$
+$$
 \frac{dv}{dt} = \alpha v(1-v)(v-0.4) + 0.8(1-v) - 3.6 uv
 $$
-
 
 
 
