@@ -98,9 +98,18 @@ $\alpha = 20.1$
 ![Simulation](Media/trajectories_and_fp_alpha20.1_500000.gif)
 
 ### Samples = 5000000
+$\alpha = 19.9$
+![Simulation](Media/trajectories_and_fp_alpha19.9_5000000.gif)
+
+$\alpha = 20$
+![Simulation](Media/trajectories_and_fp_alpha20.0_5000000.gif)
+
+$\alpha = 20.1$
+![Simulation](Media/trajectories_and_fp_alpha20.1_5000000.gif)
 
 ## 4. Conclusion
 Our results suggest that **standard MLP architectures with Mean-Squared Error Loss functions** can converge in loss, but not represent the accurate long term dynamics of a system near a saddle-node bifurcation. Furthermore, the learned system was not able to generalize the invariant region (the unit square). 
+Adding more data also does not fix this issue, as the model performed best around 5,000 data points, suggesting the struggle is in the data being limited to an invariant region, but the neural ODE trying to generalize for any input from $\mathbb{R}^2$.
 
 Future work must involve a comprehensive study of how loss functions interact with these trajectories.
 ---
