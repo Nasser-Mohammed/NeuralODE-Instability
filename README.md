@@ -57,11 +57,45 @@ $\alpha = 20.1$
 
 ### Samples = 500
 
+$\alpha = 19.9$
+![Simulation](Media/trajectories_and_fp_alpha19.9_500.gif)
+
+$\alpha = 20$
+![Simulation](Media/trajectories_and_fp_alpha20.0_500.gif)
+
+$\alpha = 20.1$
+![Simulation](Media/trajectories_and_fp_alpha20.1_500.gif)
+
 ### Samples = 5000
 
+$\alpha = 19.9$
+![Simulation](Media/trajectories_and_fp_alpha19.9_5000.gif)
+
+$\alpha = 20$
+![Simulation](Media/trajectories_and_fp_alpha20.0_5000.gif)
+
+$\alpha = 20.1$
+![Simulation](Media/trajectories_and_fp_alpha20.1_5000.gif)
+
 ### Samples = 50000
+$\alpha = 19.9$
+![Simulation](Media/trajectories_and_fp_alpha19.9_50000.gif)
+
+$\alpha = 20$
+![Simulation](Media/trajectories_and_fp_alpha20.0_50000.gif)
+
+$\alpha = 20.1$
+![Simulation](Media/trajectories_and_fp_alpha20.1_50000.gif)
 
 ### Samples = 500000
+$\alpha = 19.9$
+![Simulation](Media/trajectories_and_fp_alpha19.9_500000.gif)
+
+$\alpha = 20$
+![Simulation](Media/trajectories_and_fp_alpha20.0_500000.gif)
+
+$\alpha = 20.1$
+![Simulation](Media/trajectories_and_fp_alpha20.1_500000.gif)
 
 ### Samples = 5000000
 
