@@ -1,4 +1,4 @@
-# Structural Instability of Neural ODEs Near Bifurcations and Invariant Boundaries
+# Structural Instability of Neural ODEs Near Saddle-Node Bifurcations and Invariant Boundaries
 
 **Status:** Manuscript in Preparation (Dec 2025)  
 **Author:** Nasser Mohammed  
