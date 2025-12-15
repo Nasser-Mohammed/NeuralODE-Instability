@@ -46,7 +46,7 @@ We train and compare these systems for varying amounts of data from fifty to fiv
 
 ### Samples = 50
 $\alpha = 19.9$
-![Simulation](media/trajectories_and_fp_alpha19.9_50.gif)
+![Simulation](Media/trajectories_and_fp_alpha19.9_50.gif)
 
 
 ### Samples = 500
