@@ -1,23 +1,24 @@
-# On the Unlearnability of Saddle-Node Ghosts: Structural Instability in Neural ODEs
+# Structural Instability of Neural ODEs Near Bifurcations and Invariant Boundaries
 
 **Status:** Manuscript in Preparation (Dec 2025)  
 **Author:** Nasser Mohammed  
 **Topic:** Scientific Machine Learning (SciML), Dynamical Systems, Bifurcation Theory
 
 ## Abstract
-Neural Ordinary Differential Equations (Neural ODEs) have emerged as a powerful tool for system identification, but their topological fidelity near critical transitions remains unproven. In this study, we investigate the learnability of **Saddle-Node Bifurcations** (specifically the "ghost" region) in a reaction-diffusion system.
+Neural Ordinary Differential Equations (Neural ODEs) have emerged as a powerful tool for system identification, but their topological fidelity near critical transitions remains unclear. In this study, we investigate the learnability of **Saddle-Node Bifurcations** (specifically the "ghost" region) in a reaction-diffusion system.
 
 We demonstrate that standard neural architectures suffer from **"Artificial Hyperbolization,"** consistently regularizing degenerate non-hyperbolic equilibria ($\lambda=0$) into stiff hyperbolic sinks ($\lambda \ll 0$). Through a comprehensive ablation study involving Inverse-Velocity Weighting, Sobolev (Vector Field) Training, and L-BFGS optimization, we show that this failure is robust to training strategy. We conclude that the inductive bias of piecewise-linear networks creates a representational barrier, preventing the capture of quadratic tangencies ($f(x) \sim x^2$) without destroying global limit cycles.
 
 ---
 
 ## 1. The Problem: Spectral Bias vs. Critical Slowing Down
-Biological systems often operate near tipping points characterized by **Saddle-Node on Invariant Circle (SNIC)** bifurcations. These regions exhibit "ghost" dynamics where the trajectory slows down algebraically ($O(t^{-1})$).
+Biological systems often operate near tipping points characterized by **Saddle-Node** bifurcations. These regions exhibit "ghost" dynamics where the trajectory slows down algebraically ($O(t^{-1})$). Furthermore, many of these systems are only biologically relevent for certain invariant regions. A common example is when the differential equations model
+concentrations of a species, which is naturally bounded in $[0,1]^n$.
 
-We hypothesize that standard Neural ODEs, driven by **Spectral Bias** and **Lipschitz constraints**, cannot represent the "flat" cubic contact of a ghost point, effectively smoothing out the bottleneck.
+We hypothesize that standard Neural ODEs struggle with simultaneously capturing the local dynamics of fixed points near bifurcations and the invariant region boundaries.
 
 ### The System
-We analyze a custom Predator-Prey model derived to exhibit a local saddle-node ghost at $z^* = (0, 0.2)$.
+We analyze a custom Predator-Prey model derived to exhibit a local saddle-node ghost near $z^* = (0, 0.2)$.
 - **Ground Truth Eigenvalues:** $\lambda_1 = 0.00$ (Center), $\lambda_2 = -3.11$ (Stable).
 - **Topology:** Non-Hyperbolic.
 
@@ -27,7 +28,7 @@ We analyze a custom Predator-Prey model derived to exhibit a local saddle-node g
 
 We subjected the Neural ODE to a "Steel-Man" suite of training regimes. All failed to capture the topology, revealing fundamental architectural limitations.
 
-### A. Artificial Hyperbolization (Standard MSE)
+### A. Artificial (Standard MSE)
 Standard training ignores the vanishing gradients at the ghost point ("Gradient Starvation").
 - **Result:** The model learns a "Black Hole" sink with $\lambda \approx -14.5$.
 - **Visual:** The model trajectory (Red) flies past the ghost point where the Truth (Blue) hangs.
