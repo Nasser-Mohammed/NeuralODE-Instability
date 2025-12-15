@@ -100,18 +100,13 @@ $\alpha = 20.1$
 ### Samples = 5000000
 
 ## 4. Conclusion
-Our results suggest that **standard MLP architectures are mathematically incapable** of representing SNIC bifurcations without introducing structural instability. The piecewise-linear inductive bias forces the model to trade off between capturing the slow manifold (ghost) and the fast manifold (limit cycle); it cannot satisfy both simultaneously.
+Our results suggest that **standard MLP architectures with Mean-Squared Error Loss functions** can converge in loss, but not represent the accurate long term dynamics of a system near a saddle-node bifurcation. Furthermore, the learned system was not able to generalize the invariant region (the unit square). 
 
-Future work must move beyond loss function engineering and explore **Rational Networks** or **Bifurcation-Informed Priors** to enforce polynomial degeneracy constraints.
-
+Future work must involve a comprehensive study of how loss functions interact with these trajectories.
 ---
 
 ## Project Structure
-* `system_definitions.py`: PyTorch implementation of the Predator-Prey system.
-* `train_ablation.py`: Script to run the full suite (MSE, Weighted, Sobolev, L-BFGS).
-* `visualize.py`: Generates the phase portraits and animations.
+
 
 ## Usage
-To reproduce the failure analysis:
-```bash
-python train_ablation.py --mode lbfgs --visualize
+To reproduce the failure analysis
