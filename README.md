@@ -45,6 +45,9 @@ As mentioned, the system has 3 distinct regimes that we are training on:
 We train and compare these systems for varying amounts of data from fifty to five million (50, 500, 5000, 50000, 500000, 50000000) data points. The results are below: 
 
 ### Samples = 50
+$\alpha = 19.9$
+![Simulation](media/trajectories_and_fp_alpha19.9_50.gif)
+
 
 ### Samples = 500
 
