@@ -66,7 +66,7 @@ $\alpha = 20$
 $\alpha = 20.1$
 ![Simulation](Media/trajectories_and_fp_alpha20.1_500.gif)
 
-### Samples = 5000
+### Samples = 5000 (Best Performance)
 
 $\alpha = 19.9$
 ![Simulation](Media/trajectories_and_fp_alpha19.9_5000.gif)
