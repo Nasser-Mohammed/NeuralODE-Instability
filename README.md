@@ -49,7 +49,7 @@ $\alpha = 19.9$
 ![Simulation](Media/trajectories_and_fp_alpha19.9_50.gif)
 
 $\alpha = 20$
-![Simulation](Media/trajectories_and_fp_alpha20_50.gif)
+![Simulation](Media/trajectories_and_fp_alpha20.0_50.gif)
 
 $\alpha = 20.1$
 ![Simulation](Media/trajectories_and_fp_alpha20.1_50.gif)
