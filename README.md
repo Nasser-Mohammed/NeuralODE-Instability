@@ -35,47 +35,26 @@ $$
 
 
 
-## 2. Key Results: The Hierarchy of Failure
+## 2. Key Results
 
-We subjected the Neural ODE to a "Steel-Man" suite of training regimes. All failed to capture the topology, revealing fundamental architectural limitations.
+As mentioned, the system has 3 distinct regimes that we are training on: 
+1) ($\alpha = 19.9$) This system has a limit cycle, an unstable spiral at $(0.34, 0.406)$, and a saddle at $(0,1)$. It is here where we see ghost dynamics near $(0, 0.2)$.
+2) ($\alpha = 20$) This system has a limit cycle, an unstable spiral at $(0.34, 0.406)$, a saddle at $(0,1)$, and a non-hyperbolic equilibrium at $(0, 0.2)$.
+3) ($\alpha = 20.1$) This system has a limit cycle, an unstable spiral at $(0.34, 0.406)$, a saddle at $(0,1)$, a sink at $(0, 0.186)$, and a saddle node at $(0, 0.214)$. This last saddle node defines the boundary between the basin of attraction for the two main attractors: the limit cycle and the sink.
 
-### A. Artificial (Standard MSE)
-Standard training ignores the vanishing gradients at the ghost point ("Gradient Starvation").
-- **Result:** The model learns a "Black Hole" sink with $\lambda \approx -14.5$.
-- **Visual:** The model trajectory (Red) flies past the ghost point where the Truth (Blue) hangs.
+We train and compare these systems for varying amounts of data from fifty to five million (50, 500, 5000, 50000, 500000, 50000000) data points. The results are below: 
 
-![Ghost Race](Media/neural_ode_race_first.gif)
-*Figure 1: Trajectory comparison. Note the failure of the Neural ODE (Red) to capture the critical slowing down timescale.*
+### Samples = 50
 
-### B. Bifurcation Collapse (Sobolev & L-BFGS)
-Even when trained with **Second-Order Optimization (L-BFGS)** or **Explicit Vector Field Matching (Sobolev Loss)**, the model fails to maintain the saddle-node degeneracy.
-- **Result:** The ghost is converted into a weak sink ($\lambda \approx -3.01$).
-- **Consequence:** This spurious attractor "sucks in" the global limit cycle, destroying the oscillation entirely.
+### Samples = 500
 
-![Bifurcation Collapse](Media/phase_portrait_comparison.png)
-*Figure 2: Topological catastrophe. The Neural ODE (Right) regularizes the ghost into a sink, collapsing the limit cycle that exists in the Ground Truth (Left).*
+### Samples = 5000
 
----
+### Samples = 50000
 
-## 3. Mechanism of Failure
+### Samples = 500000
 
-### The Magnitude Gap
-The failure is driven by the inability of the network to fit the "flat" quadratic bottom of the vector field magnitude. The network approximates the parabolic $|f(x)| \sim x^2$ with a V-shaped linear approximation $|f(x)| \sim |x|$, resulting in a non-zero derivative at the minimum.
-
-![Magnitude Proof](Media/magnitude_proof.png)
-*Figure 3: Vector field magnitude along the center manifold. The Neural ODE (Red) cannot capture the zero-tangency of the Truth (Blue), enforcing a minimum velocity > 0.*
-
-### Summary of Experiments
-
-| Training Method | Learned Eigenvalues ($\lambda_1, \lambda_2$) | Topological Outcome |
-| :--- | :--- | :--- |
-| **Ground Truth** | **$0.00, -3.11$** | **Saddle-Node Ghost** |
-| Standard MSE (Adam) | $-14.51, -5.16$ | Stiff Sink (Drift) |
-| Inverse-Weighted | $-2.21, +0.01$ | Unstable Saddle |
-| L-BFGS (2nd Order) | $-4.57, -1.03$ | Spurious Attractor |
-| Sobolev (Vector) | $-3.01, -0.09$ | **Bifurcation Collapse** |
-
----
+### Samples = 5000000
 
 ## 4. Conclusion
 Our results suggest that **standard MLP architectures are mathematically incapable** of representing SNIC bifurcations without introducing structural instability. The piecewise-linear inductive bias forces the model to trade off between capturing the slow manifold (ghost) and the fast manifold (limit cycle); it cannot satisfy both simultaneously.
